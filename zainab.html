@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>زينب 🤍 أيوب</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ffb6c1,#87cefa);
+    overflow:hidden;
+    font-family:Arial;
+    text-align:center;
+}
+
+#container{z-index:10;width:90%}
+
+h1,h3{margin:10px 0}
+
+button{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    background:#ff69b4;
+    color:white;
+    cursor:pointer;
+}
+
+.answer{
+    margin:10px auto;
+    padding:12px 20px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+    transition:opacity 1s;
+    width:fit-content;
+}
+
+/* ❤️ قلب نصي */
+#heartText{
+    font-family:monospace;
+    white-space:pre;
+    font-size:20px;
+    background:linear-gradient(45deg,#ff1493,#ff69b4,#ff0000);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    display:none;
+}
+
+/* 🌸 الخاتمة */
+#ending{
+    display:none;
+    font-size:26px;
+    font-weight:bold;
+    background:linear-gradient(45deg,#ff1493,#ff69b4,#ff0000);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:zoomIn 3s ease forwards;
+}
+
+@keyframes zoomIn{
+    from{transform:scale(0.5);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+/* 💖 القلوب */
+.floating{
+    position:absolute;
+    bottom:-40px;
+    font-size:24px;
+    animation:floatUp linear infinite;
+    opacity:0.8;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(0);opacity:1}
+    100%{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="intro">
+<h1>هلا زينبي 🤍</h1>
+<h3>
+هاي مفاجأة صغيرة  
+<br>ولعبة حلوة إلنا 😌  
+<br>خليني أشوف شكد تحبيني وشلون گلبچ وياي 😁💖
+</h3>
+</div>
+
+<button id="startBtn" style="display:none">ابدئي 💕</button>
+
+<div id="questionBox"></div>
+<div id="heartText"></div>
+
+<div id="ending">
+اعشقج يا أحلى زينب بحياتي 💖  
+<br>وجودچ بحياتي نعمة 🤍
+</div>
+
+<audio id="song" src="ant_tuhibni.mp3"></audio>
+
+</div>
+
+<script>
+const song=document.getElementById("song");
+
+setTimeout(()=>{
+  intro.style.display="none";
+  startBtn.style.display="inline-block";
+},10000);
+
+const questions=[
+ {q:"تحبيني؟ 😌",a:["1. اي احبك","2. اعشقك مو بس احبك 🌚"]},
+ {q:"يا لون تحبين؟ 🎨",a:["1. لون عيونك","2. اللون اللي يشبه قلبك 💖"]},
+ {q:"إذا سافرنا وين تحبين نروح؟ 😁✈️",a:["1. تركيا","2. أربيل","3. غرفتنا 😂"]},
+ {q:"شنو أكثر شي ترتاحين لما تكونين؟ 🤍",a:["1. بين أحضاني 🫂","2. جهنم 😂😂"]},
+ {q:"شنو الي يعجبچ بيه؟ 😏",a:["1. صبري عليچ","2. فهمي الچ"]},
+ {q:"شنو أكثر شي تحبينه بشكلي؟ 😂",a:["1. خدودي","2. شفايفي","3. خشمي 😂","4. حاجبي","5. عيوني 😂"]}
+];
+
+let index=0;
+const box=document.getElementById("questionBox");
+
+startBtn.onclick=()=>{
+  song.play();
+  startBtn.style.display="none";
+  showQuestion();
+};
+
+function showQuestion(){
+  box.innerHTML="";
+  if(index>=questions.length){
+    box.style.display="none";
+    document.getElementById("ending").style.display="block";
+    return;
+  }
+
+  let h=document.createElement("h3");
+  h.textContent=questions[index].q;
+  box.appendChild(h);
+
+  questions[index].a.forEach((ans,i)=>{
+    let d=document.createElement("div");
+    d.className="answer";
+    d.style.background=i%2==0?"#ff69b4":"#87cefa";
+    d.textContent=ans;
+
+    d.onclick=()=>{
+      d.style.opacity=0;
+      setTimeout(()=>{
+        index++;
+        if(index===2){showHeart();}
+        else{showQuestion();}
+      },1000);
+    };
+    box.appendChild(d);
+  });
+}
+
+function showHeart(){
+  const heart=`
+      أحبچ   أحبچ
+   أحبچ   أحبچ   أحبچ
+ أحبچ   أحبچ   أحبچ   أحبچ
+   أحبچ   أحبچ   أحبچ
+      أحبچ   أحبچ
+  `;
+  heartText.textContent=heart;
+  heartText.style.display="block";
+  setTimeout(()=>{
+    heartText.style.display="none";
+    showQuestion();
+  },3000);
+}
+
+/* قلوب مستمرة */
+function spawnHearts(){
+  for(let i=0;i<8;i++){
+    let h=document.createElement("div");
+    h.className="floating";
+    h.textContent="💖";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(3+Math.random()*3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  }
+}
+setInterval(spawnHearts,250);
+</script>
+
+</body>
+</html>
